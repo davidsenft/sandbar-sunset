@@ -1,0 +1,19 @@
+# Cloudflare Worker config — static assets only, no Worker script.
+#
+# `directory` is the folder that actually gets served. Everything else in the repo
+# (rasters, derivation scripts, source template) stays out of the deploy.
+#
+# `name` must match the existing Worker, otherwise `wrangler deploy` creates a
+# second one instead of updating this one.
+
+name = "sandbar-sunset"
+compatibility_date = "2026-07-31"
+
+[assets]
+directory = "./public"
+
+# Serve the page at the subdomain root. Cloudflare creates the DNS record and
+# provisions the certificate for a custom_domain automatically.
+[[routes]]
+pattern = "sandbar-sunset.davesenft.com"
+custom_domain = true
