@@ -3,9 +3,8 @@
 **Live at [sandbar-sunset.davesenft.com](https://sandbar-sunset.davesenft.com)**
 
 At Wingaersheek Beach in Gloucester, Massachusetts, a sandbar runs out from the shore and
-bares itself at low tide. Once in a while the tide falls away at the same moment the sun
-goes down, and you can walk far out onto it in the last of the light. This works out when
-that happens next — and every other time it will happen through December 2040.
+bares itself at low tide. Every couple of weeks the low tide aligns with golden hour, and you can walk far out onto it in the last of the light. This works out when
+that happens next, and every other time it will happen through December 2040.
 
 Tides are astronomy, so this needs no server and no live data. The whole thing is one
 self-contained 124 KB HTML file: no CDN, no fonts, no runtime network calls. It works
@@ -34,8 +33,7 @@ The ratings are pure geometry — nothing weighted or averaged:
 | **Two suns** | the half hour either side of sunset is walkable throughout |
 | **One sun** | that same hour is wadeable throughout |
 
-That works out to roughly 23, 63 and 42 evenings a year respectively, with about ten
-three-sun evenings falling in swimmable weather.
+That works out to roughly 23, 63 and 42 evenings a year respectively.
 
 ## Rebuilding
 
