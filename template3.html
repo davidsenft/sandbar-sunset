@@ -1,0 +1,695 @@
+<meta charset="utf-8">
+<title>Sandbar Sunset — Wingaersheek</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --dusk:#3a2c4f; --dusk-deep:#241a38; --ember:#ff7a4d; --gold:#ffc978;
+    --foam:#fff7ea; --sand:#ebd9b4; --wetsand:#cfae7e;
+    --serif:"Palatino","Palatino Linotype","Book Antiqua",Georgia,serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--dusk);background:var(--sand);overflow-x:hidden}
+  button,input{font:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:3px solid var(--ember);outline-offset:2px;border-radius:4px}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;
+    background:linear-gradient(to bottom,#9fc0d8,#e8d9bc 62%,#ffd9a0 78%);transition:background 2s}
+  .celest{position:absolute;left:var(--sunX,50%);transform:translateX(-50%);border-radius:50%;z-index:1;transition:all 2s}
+  .glow{position:absolute;left:var(--sunX,50%);transform:translate(-50%,50%);border-radius:50%;z-index:0;pointer-events:none;transition:all 2s}
+  .sea-band{position:absolute;left:0;right:0;bottom:0;height:24%;z-index:2;
+    background:linear-gradient(to bottom,var(--seaA,#79aabf),var(--seaB,#3e7d99));transition:background 2s}
+  .glint{position:absolute;left:var(--sunX,50%);transform:translateX(-50%);bottom:0;height:24%;width:110px;z-index:3;
+    background:linear-gradient(to bottom,var(--glintA,rgba(255,220,150,.55)),rgba(255,220,150,0));
+    filter:blur(6px);pointer-events:none;transition:all 2s}
+  .waves{position:absolute;left:-5%;width:220%;z-index:3;opacity:.5}
+  .w1{bottom:16%;animation:drift 26s linear infinite}
+  .w2{bottom:9%;opacity:.35;animation:drift 34s linear infinite reverse}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-25%)}}
+  .bar-svg{position:absolute;left:0;right:0;bottom:0;width:100%;z-index:4;display:block}
+  .gull{position:absolute;z-index:5;animation:soar 38s linear infinite;opacity:.85}
+  .gull.g2{animation-duration:52s;animation-delay:-20s}
+  @keyframes soar{0%{transform:translate(-8vw,0)}50%{transform:translate(55vw,-26px)}100%{transform:translate(112vw,6px)}}
+  @media (prefers-reduced-motion:reduce){.waves,.gull{animation:none}.gull{left:60%}}
+
+  .hero-top{position:relative;z-index:6;display:flex;justify-content:space-between;gap:12px;
+    padding:18px 24px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--inkSoft,#4d3d63)}
+  .hero-copy{position:relative;z-index:6;flex:1;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:12px 20px 32vh;color:var(--ink,var(--dusk))}
+  h1.wordmark{font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(40px,7.5vw,76px);margin:0 0 6px;line-height:1.02;text-wrap:balance}
+  .tagline{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    margin:0 0 32px;color:var(--inkSoft,#4d3d63)}
+  .next-label{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    margin:0 0 10px;color:var(--inkSoft,#4d3d63)}
+  .next-date{font-family:var(--serif);font-size:clamp(28px,4.6vw,46px);margin:0 0 18px;line-height:1.1;text-wrap:balance}
+  .next-date .yr{opacity:.65;font-size:.62em;font-style:italic}
+  .count{display:flex;gap:10px;justify-content:center;margin:0 0 18px;font-variant-numeric:tabular-nums}
+  .cbox{background:var(--panel,rgba(255,247,234,.42));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid var(--panelBrd,rgba(58,44,79,.18));border-radius:10px;padding:10px 12px;min-width:74px}
+  .cbox b{display:block;font-family:var(--mono);font-size:clamp(22px,3.4vw,34px);font-weight:600;line-height:1}
+  .cbox span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+    margin-top:6px;opacity:.75}
+  .count-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    margin:0 0 22px;opacity:.8}
+  .beats{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0 0 20px;max-width:790px}
+  .beat{flex:1 1 190px;max-width:250px;text-align:left;background:var(--panel,rgba(255,247,234,.42));
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid var(--panelBrd,rgba(58,44,79,.18));border-radius:12px;padding:13px 15px}
+  .beat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin:0 0 6px}
+  .beat .v{font-family:var(--mono);font-size:19px;font-weight:600;margin:0 0 4px;font-variant-numeric:tabular-nums}
+  .beat .n{font-size:13px;line-height:1.4;margin:0;opacity:.9}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;
+    letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;border-radius:999px;
+    background:var(--panel,rgba(255,247,234,.42));border:1px solid var(--panelBrd,rgba(58,44,79,.18))}
+  .suns{display:inline-flex;gap:3px}
+  .happening{font-family:var(--mono);font-size:clamp(15px,2.4vw,20px);letter-spacing:.22em;text-transform:uppercase;
+    padding:12px 22px;border:2px solid currentColor;border-radius:999px;margin:0 0 18px;animation:beat 2.4s ease-in-out infinite}
+  @keyframes beat{0%,100%{opacity:1}50%{opacity:.55}}
+  @media (prefers-reduced-motion:reduce){.happening{animation:none}}
+
+  /* ===== BODY ===== */
+  .shore{background:linear-gradient(to bottom,var(--wetsand),var(--sand) 340px);position:relative}
+  section{max-width:900px;margin:0 auto;padding:56px 22px 30px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#7a5f3f;margin:0 0 8px}
+  h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(26px,3.6vw,34px);margin:0 0 12px;text-wrap:balance}
+  .pickrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 14px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#6b5335}
+  .pickrow input[type=date]{font-family:var(--mono);font-size:12.5px;letter-spacing:0;text-transform:none;
+    color:var(--dusk);background:rgba(255,247,234,.75);border:1px solid rgba(122,95,63,.45);
+    border-radius:8px;padding:6px 9px}
+  .ghost{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#5b4429;
+    background:none;border:1px solid rgba(122,95,63,.4);border-radius:999px;padding:6px 13px}
+  .ghost:hover{background:rgba(255,247,234,.7)}
+  .rating{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:#5b4429;margin:0 0 14px;min-height:20px}
+  .rating.miss{color:#8a6a45}
+  .chartwrap{background:rgba(255,247,234,.55);border:1px solid rgba(122,95,63,.25);border-radius:14px;
+    padding:18px 14px 10px;overflow-x:auto}
+  .chart-note{font-size:13px;color:#6b5335;margin:10px 4px 0;line-height:1.55}
+  .readout{font-family:var(--mono);font-size:12px;color:#5b4429;margin:6px 4px 0;min-height:1.2em;font-variant-numeric:tabular-nums}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 4px 0;font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;color:#6b5335}
+  .legend i{display:inline-block;width:22px;height:9px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+  .list-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 6px}
+  .toggle{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:#5b4429;background:none;border:1px solid rgba(122,95,63,.4);
+    border-radius:999px;padding:7px 14px}
+  .toggle .dot{width:10px;height:10px;border-radius:50%;border:1.5px solid #7a5f3f;background:transparent}
+  .toggle[aria-pressed="true"]{background:rgba(255,247,234,.7)}
+  .toggle[aria-pressed="true"] .dot{background:var(--ember);border-color:var(--ember)}
+  .month-h{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    color:#7a5f3f;margin:30px 0 4px;padding-bottom:6px;border-bottom:1px solid rgba(122,95,63,.35)}
+  .row{display:grid;grid-template-columns:minmax(140px,1fr) auto auto minmax(150px,1.1fr) auto;gap:6px 18px;
+    align-items:baseline;width:100%;text-align:left;background:none;border:none;
+    border-bottom:1px dashed rgba(122,95,63,.3);padding:13px 6px;color:var(--dusk);border-radius:0}
+  .row:hover{background:rgba(255,247,234,.55)}
+  .row.featured{background:rgba(255,247,234,.8);box-shadow:inset 3px 0 0 var(--ember)}
+  .row .d{font-family:var(--serif);font-size:17.5px}
+  .row .d small{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:#7a5f3f;display:block;margin-top:2px}
+  .row .tv{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .row .tv small{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#7a5f3f;margin-top:3px}
+  .row .gap{font-size:13px;color:#5b4429;line-height:1.45}
+  .row .suns{justify-self:end}
+  .more{display:block;margin:26px auto 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;
+    text-transform:uppercase;background:var(--dusk);color:var(--foam);border:none;border-radius:999px;padding:12px 26px}
+  .more:hover{background:var(--dusk-deep)}
+  @media (max-width:720px){ .hero-top span+span{display:none} }
+  @media (max-width:660px){
+    .row{grid-template-columns:1fr auto;grid-template-areas:"d suns" "lo su" "gap gap"}
+    .row .d{grid-area:d}.row .lo{grid-area:lo}.row .su{grid-area:su;justify-self:end}
+    .row .gap{grid-area:gap}.row .suns{grid-area:suns;align-self:start}
+    .cbox{min-width:60px;padding:8px 9px}
+  }
+  footer{background:var(--dusk-deep);color:#cfc2e0;margin-top:60px}
+  footer .inner{max-width:900px;margin:0 auto;padding:52px 22px 60px;font-size:14px;line-height:1.65}
+  footer h3{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--foam);font-size:22px;margin:0 0 12px}
+  footer h4{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold);margin:26px 0 8px}
+  footer p{margin:0 0 14px;max-width:66ch}
+  footer .fine{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#8d7ba8;margin-top:24px;line-height:1.6}
+  footer a{color:var(--gold)}
+  footer strong{color:var(--foam)}
+</style>
+
+<div class="hero" id="hero">
+  <div class="glow" id="glow"></div>
+  <div class="celest" id="sun"></div>
+  <svg class="gull" style="top:15%" width="34" height="14" viewBox="0 0 34 14" aria-hidden="true"><path d="M1 9 Q8 2 17 8 Q26 2 33 9" fill="none" stroke-width="2" stroke-linecap="round"/></svg>
+  <svg class="gull g2" style="top:23%" width="24" height="10" viewBox="0 0 34 14" aria-hidden="true"><path d="M1 9 Q8 2 17 8 Q26 2 33 9" fill="none" stroke-width="2.4" stroke-linecap="round"/></svg>
+  <div class="sea-band"></div>
+  <div class="glint"></div>
+  <svg class="waves w1" viewBox="0 0 1200 30" preserveAspectRatio="none" height="26" aria-hidden="true">
+    <path d="M0 15 Q75 0 150 15 T300 15 T450 15 T600 15 T750 15 T900 15 T1050 15 T1200 15 V30 H0 Z" fill="rgba(255,247,234,.5)"/>
+  </svg>
+  <svg class="waves w2" viewBox="0 0 1200 30" preserveAspectRatio="none" height="20" aria-hidden="true">
+    <path d="M0 15 Q75 0 150 15 T300 15 T450 15 T600 15 T750 15 T900 15 T1050 15 T1200 15 V30 H0 Z" fill="rgba(255,247,234,.5)"/>
+  </svg>
+  <svg class="bar-svg" viewBox="0 0 1200 150" preserveAspectRatio="none" height="150" aria-hidden="true">
+    <path d="M0 150 L0 118 Q140 96 330 104 Q560 114 690 92 Q780 78 880 88 Q1050 104 1200 96 L1200 150 Z" fill="var(--dusk)"/>
+  </svg>
+  <svg class="bar-svg" viewBox="0 0 1200 150" height="150" style="z-index:5" aria-hidden="true">
+    <g fill="var(--dusk-deep)">
+      <path d="M690 74 l2.6 -12 l2.6 12 l-1.2 0 l-1.4 -6.5 l-1.4 6.5 Z"/><circle cx="692.6" cy="59.5" r="2.6"/>
+      <path d="M704 78 l2.2 -10 l2.2 10 l-1 0 l-1.2 -5.5 l-1.2 5.5 Z"/><circle cx="706.2" cy="65.5" r="2.2"/>
+      <path d="M718 80 l3.5 -4.5 l3.5 1 l2.5 3.5 l-1.5 0 l-2 -2.5 l-3 -.5 l-1.5 3 Z"/><circle cx="722" cy="74.5" r="1.8"/>
+    </g>
+  </svg>
+
+  <div class="hero-top">
+    <span>Wingaersheek Beach · Gloucester, Mass.</span>
+    <span>Tide ↓ meets sun ↓ · charts to 2040</span>
+  </div>
+  <div class="hero-copy">
+    <h1 class="wordmark">Sandbar Sunset</h1>
+    <p class="tagline">a low-tide &amp; golden-hour almanac</p>
+    <div id="heromain"></div>
+  </div>
+</div>
+
+<div class="shore">
+  <section id="evening">
+    <p class="eyebrow">That evening, hour by hour</p>
+    <h2 id="ev-title">The crossing and the sun</h2>
+    <div class="pickrow">
+      <label for="datepick">Look up any evening</label>
+      <input type="date" id="datepick" min="2026-07-01" max="2040-12-31" autocomplete="off">
+      <button class="ghost" id="nextbtn">Back to the next one</button>
+    </div>
+    <p class="rating" id="ev-rating"></p>
+    <div class="chartwrap">
+      <div id="chart"></div>
+      <p class="readout" id="readout">&nbsp;</p>
+      <div class="legend">
+        <span><i style="background:#ecd9b0"></i>walkable</span>
+        <span><i style="background:#a9cfdf"></i>wadeable</span>
+        <span><i style="background:#f3b58c"></i>golden hour</span>
+      </div>
+    </div>
+    <p class="chart-note" id="chart-note"></p>
+  </section>
+
+  <section id="chances">
+    <div class="list-head">
+      <div>
+        <p class="eyebrow">Plan the pilgrimage</p>
+        <h2 style="margin-bottom:4px">Every good evening, through 2040</h2>
+      </div>
+      <button class="toggle" id="warmtoggle" aria-pressed="false"><span class="dot"></span>Beach weather only (May–Sep)</button>
+    </div>
+    <div id="rows"></div>
+    <button class="more" id="morebtn">Show more evenings</button>
+  </section>
+</div>
+
+<footer>
+  <div class="inner">
+    <h3>How this works</h3>
+    <p>Two levels on the crossing, one band of light, and a rule that fits in a sentence.</p>
+
+    <h4>1 · The crossing</h4>
+    <p>The Wingaersheek bar is a spit joined to the beach by a low saddle. Mapping NOAA's 1/9-arc-second
+      coastal elevation model of the flats puts that saddle at roughly <strong>1.4 ft above MLLW</strong>, while
+      the bar's own spine runs a foot or two higher — so there's a real window where the bar is bare sand and
+      the neck you cross is still shin-deep. Two levels matter: below about <strong>1.9 ft</strong> the crossing
+      is ankle-deep at most and you can simply walk it; below about <strong>3.4 ft</strong> it's a wade, up to
+      roughly thigh-deep. Deeper than that and the bar is effectively an island. Those are the two bands on the chart.</p>
+
+    <h4>2 · The rule</h4>
+    <p>A rating is a statement about where the tide curve sits relative to the two crossing levels and the
+      golden band. Nothing is weighted or averaged; an evening either satisfies a rule or it doesn't.</p>
+    <p><strong>Three suns</strong> — golden hour opens while the crossing is in the wadeable band (under
+      wade, still over walk), and the half hour after sunset is walkable throughout. Nothing is required of
+      the half hour before sunset; that's when the wading happens.<br>
+      <strong>Two suns</strong> — the half hour either side of sunset is walkable throughout.<br>
+      <strong>One sun</strong> — that same hour is wadeable throughout.<br>
+      Anything else is left off the list.</p>
+
+    <h4>3 · The light</h4>
+    <p>Sunset is computed for the beach itself (42.650° N, 70.684° W) with NOAA's solar algorithm, checked
+      against the US Naval Observatory. The golden band on the chart is the seventy minutes before the sun goes down.</p>
+
+    <h4>Why it can see so far ahead</h4>
+    <p>Tides are astronomy. Predictions come from NOAA's harmonic forecasts for station
+      <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8441571">8441571 — Annisquam,
+      Lobster Cove</a>, a mile up the river from the flats, and run through <strong>December 2040</strong>.
+      Three suns means the evening has the full shape described above — about <strong>twenty-three a year</strong>,
+      ten of them in swimmable weather. Use the date box above to pull up <em>any</em> evening, including the
+      ones that don't make the list, and see for yourself.</p>
+
+    <p><strong>A note from the sea:</strong> the flats flood from the edges first when the tide turns, and
+      faster than you'd think. The saddle you crossed is the first thing to go. Wander far, but keep an eye
+      on the channel behind you.</p>
+
+    <p class="fine">Honest about error bars: the saddle height carries roughly ±0.4 ft of datum uncertainty,
+      the elevation survey dates from 2021, and sandbars migrate — so treat the depths as a good guide, not a
+      guarantee. Predictions also ignore weather entirely: wind, storm surge, and clouds on the horizon do
+      what they like. Times are local to Gloucester. Compiled July 2026.</p>
+  </div>
+</footer>
+
+<script>
+const TIDE = __TIDEDATA__;
+const DRYTBL = __DRYTBL__;
+const LAT=42.6501, LON=-70.6842, TZ='America/New_York';
+const SADDLE=1.35;   // ft MLLW — the saddle onto the bar; at or below this it is bare sand
+const WALK=1.85;     // ft MLLW — 6 in over the saddle: ankle-deep at most, so you just walk it
+const WADE=3.35;     // ft MLLW — 24 in over the saddle: a thigh-deep wade, the deepest worth attempting
+const GOLD_PRE=70;   // the golden band opens this many minutes before sunset
+const B36='0123456789abcdefghijklmnopqrstuvwxyz';
+
+const _dtf=new Intl.DateTimeFormat('en-US',{timeZone:TZ,year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',hourCycle:'h23'});
+function localToUTC(y,m,d,hh,mm){
+  let guess=Date.UTC(y,m-1,d,hh,mm);
+  for(let i=0;i<3;i++){
+    const g={};_dtf.formatToParts(guess).forEach(x=>{if(x.type!=='literal')g[x.type]=parseInt(x.value,10)});
+    const asIf=Date.UTC(g.year,g.month-1,g.day,g.hour,g.minute), want=Date.UTC(y,m-1,d,hh,mm);
+    if(asIf===want)return guess;
+    guess+=want-asIf;
+  }
+  return guess;
+}
+function utcToWall(ms){
+  const g={};_dtf.formatToParts(ms).forEach(x=>{if(x.type!=='literal')g[x.type]=parseInt(x.value,10)});
+  return {y:g.year,m:g.month,d:g.day,hh:g.hour,mm:g.minute};
+}
+function decodeTides(data){
+  const [ed,et]=data.epoch.split('T');
+  const [ey,em,edd]=ed.split('-').map(Number);
+  const [eh,emin]=et.split(':').map(Number);
+  const epochWall=Date.UTC(ey,em-1,edd,eh,emin);
+  const out=[];let cum=0,type=data.firstType;
+  for(let i=0;i<data.blob.length;i+=4){
+    cum+=B36.indexOf(data.blob[i])*36+B36.indexOf(data.blob[i+1]);
+    const h=(B36.indexOf(data.blob[i+2])*36+B36.indexOf(data.blob[i+3])-40)/10;
+    const w=new Date(epochWall+cum*60000);
+    const wall={y:w.getUTCFullYear(),m:w.getUTCMonth()+1,d:w.getUTCDate(),hh:w.getUTCHours(),mm:w.getUTCMinutes()};
+    out.push({wall,utc:localToUTC(wall.y,wall.m,wall.d,wall.hh,wall.mm),h,type});
+    type=type==='H'?'L':'H';
+  }
+  return out;
+}
+function sunsetUTC(y,m,d){
+  let t=Date.UTC(y,m-1,d,17,0,0);
+  for(let i=0;i<3;i++){
+    const J=(t/86400000+2440587.5-2451545.0)/36525.0;
+    const L0=(280.46646+J*(36000.76983+J*0.0003032))%360;
+    const M=357.52911+J*(35999.05029-0.0001537*J), Mr=M*Math.PI/180;
+    const C=Math.sin(Mr)*(1.914602-J*(0.004817+0.000014*J))+Math.sin(2*Mr)*(0.019993-0.000101*J)+Math.sin(3*Mr)*0.000289;
+    const om=125.04-1934.136*J;
+    const lam=L0+C-0.00569-0.00478*Math.sin(om*Math.PI/180);
+    const eps=(23+(26+(21.448-J*(46.815+J*(0.00059-J*0.001813)))/60)/60)+0.00256*Math.cos(om*Math.PI/180);
+    const er=eps*Math.PI/180, dec=Math.asin(Math.sin(er)*Math.sin(lam*Math.PI/180));
+    const yy=Math.tan(er/2)**2, L0r=L0*Math.PI/180;
+    const ecc=0.016708634-J*(0.000042037+0.0000001267*J);
+    const Et=4*(180/Math.PI)*(yy*Math.sin(2*L0r)-2*ecc*Math.sin(Mr)+4*ecc*yy*Math.sin(Mr)*Math.cos(2*L0r)-0.5*yy*yy*Math.sin(4*L0r)-1.25*ecc*ecc*Math.sin(2*Mr));
+    const lr=LAT*Math.PI/180;
+    let cs=(Math.cos(90.833*Math.PI/180)-Math.sin(lr)*Math.sin(dec))/(Math.cos(lr)*Math.cos(dec));
+    cs=Math.max(-1,Math.min(1,cs));
+    t=Date.UTC(y,m-1,d,0,0,0)+(720-4*LON-Et+4*Math.acos(cs)*180/Math.PI)*60000;
+  }
+  return t;
+}
+
+const tides=decodeTides(TIDE);
+let _lastIdx=0;
+function tideAt(t){
+  let i=Math.min(_lastIdx,tides.length-2);
+  while(i>0&&tides[i].utc>t)i--;
+  while(i<tides.length-2&&tides[i+1].utc<=t)i++;
+  _lastIdx=i;
+  const a=tides[i],b=tides[i+1];
+  const f=(t-a.utc)/(b.utc-a.utc);
+  return (a.h+b.h)/2+(a.h-b.h)/2*Math.cos(Math.PI*f);
+}
+function crossBefore(i,thr){            // falling limb: high at i-1 down to low at i
+  if(i<1)return null;
+  const H=tides[i-1].h,L=tides[i].h;
+  if(!(thr>L&&thr<H))return null;
+  const f=Math.acos(Math.max(-1,Math.min(1,(2*thr-H-L)/(H-L))))/Math.PI;
+  return tides[i-1].utc+f*(tides[i].utc-tides[i-1].utc);
+}
+function crossAfter(i,thr){             // rising limb: low at i up to high at i+1
+  if(i+1>=tides.length)return null;
+  const L=tides[i].h,H=tides[i+1].h;
+  if(!(thr>L&&thr<H))return null;
+  const f=Math.acos(Math.max(-1,Math.min(1,(2*thr-L-H)/(L-H))))/Math.PI;
+  return tides[i].utc+f*(tides[i+1].utc-tides[i].utc);
+}
+function acresBare(lv){
+  if(lv<=DRYTBL[0][0])return DRYTBL[0][1];
+  if(lv>=DRYTBL[DRYTBL.length-1][0])return DRYTBL[DRYTBL.length-1][1];
+  for(let k=0;k<DRYTBL.length-1;k++){
+    const [x0,y0]=DRYTBL[k],[x1,y1]=DRYTBL[k+1];
+    if(lv>=x0&&lv<=x1)return y0+(y1-y0)*(lv-x0)/(x1-x0);
+  }
+  return 0;
+}
+
+// ---- describe an evening low; tier may be 0, so any date can be charted ----
+function describe(i){
+  const e=tides[i];
+  if(e.type!=='L')return null;
+  const ss=sunsetUTC(e.wall.y,e.wall.m,e.wall.d);
+  if(ss==null)return null;
+  const lowOff=(e.utc-ss)/60000;
+  const openWade=crossBefore(i,WADE), closeWade=crossAfter(i,WADE);
+  const openWalk=crossBefore(i,WALK), closeWalk=crossAfter(i,WALK);
+  const tSS=tideAt(ss), tRet=tideAt(ss+45*60000);
+  const goldenStart=ss-GOLD_PRE*60000;
+  // coverage of the half hour either side of sunset, and of the half hour after it alone
+  let nWalk=0,nWade=0,nAfter=0;
+  for(let k=-30;k<=30;k++){
+    const v=tideAt(ss+k*60000);
+    if(v<=WALK){nWalk++; if(k>=0)nAfter++;}
+    if(v<=WADE)nWade++;
+  }
+  const cover=nWalk/61, coverWade=nWade/61, coverAfter=nAfter/31;
+  const openWadeRel=openWade!=null?(openWade-ss)/60000:null;
+  const openWalkRel=openWalk!=null?(openWalk-ss)/60000:null;
+  // The ladder is purely geometric — no weights, no thresholds to tune.
+  //   3 · golden hour opens mid-wade, and the half hour after sunset is walkable throughout
+  //       (nothing is asked of the half hour before sunset — wading then is the point)
+  //   2 · the half hour either side of sunset is walkable throughout
+  //   1 · that same hour is wadeable throughout
+  let tier;
+  if(openWade!=null&&openWalk!=null&&openWade<=goldenStart&&goldenStart<=openWalk
+     &&coverAfter>=0.999) tier=3;
+  else if(cover>=0.999) tier=2;
+  else if(coverWade>=0.999) tier=1;
+  else tier=0;
+  let pattern;
+  if(openWalk==null) pattern='Wade both ways';
+  else if(tRet>WALK) pattern='Deeper coming back';
+  else if(openWalkRel<-90) pattern='Walkable all evening';
+  else pattern='Wade out, walk back';
+  // only name a walk-over time if it lands meaningfully before the sun goes down
+  const showWalk=openWalk!=null&&openWalk<=ss-5*60000;
+  return {idx:i,low:e,sunsetUTC:ss,lowOff:Math.round(lowOff),openWade,closeWade,openWalk,closeWalk,
+    openWadeRel,openWalkRel,showWalk,tSS,tRet,cover,coverWade,coverAfter,goldenStart,acres:acresBare(tSS),tier,pattern,
+    goTime:openWade!=null?openWade:openWalk};
+}
+function findAll(){
+  const out=[];
+  for(let i=1;i<tides.length-1;i++){
+    if(tides[i].type!=='L'||tides[i].h>=WADE)continue;
+    const r=describe(i);
+    if(!r||r.tier===0||r.openWade==null)continue;
+    if(r.lowOff<-260||r.lowOff>260)continue;
+    out.push(r);
+  }
+  return out;
+}
+// the evening low closest to sunset on a given local date — used by the date box
+function lowNearestSunset(y,m,d){
+  const ss=sunsetUTC(y,m,d);
+  const t0=localToUTC(y,m,d,0,0)-9*3600000, t1=localToUTC(y,m,d,23,59)+9*3600000;
+  let best=null,bd=Infinity;
+  for(let i=1;i<tides.length-1;i++){
+    const e=tides[i];
+    if(e.utc<t0)continue;
+    if(e.utc>t1)break;
+    if(e.type!=='L')continue;
+    const dd=Math.abs(e.utc-ss);
+    if(dd<bd){bd=dd;best=i;}
+  }
+  return best;
+}
+
+// ---- formatting ----
+const fmtTime=ms=>new Intl.DateTimeFormat('en-US',{timeZone:TZ,hour:'numeric',minute:'2-digit'}).format(ms);
+const fmtDateLong=ms=>new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'long',month:'long',day:'numeric'}).format(ms);
+const fmtDateShort=ms=>new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'short',month:'short',day:'numeric'}).format(ms);
+const fmtYear=ms=>new Intl.DateTimeFormat('en-US',{timeZone:TZ,year:'numeric'}).format(ms);
+const fmtMonthYear=ms=>new Intl.DateTimeFormat('en-US',{timeZone:TZ,month:'long',year:'numeric'}).format(ms);
+const isoDate=ms=>{const w=utcToWall(ms);return w.y+'-'+String(w.m).padStart(2,'0')+'-'+String(w.d).padStart(2,'0')};
+const ft=h=>(h>0?'+':h<0?'−':'')+Math.abs(h).toFixed(1)+' ft';
+// depth of water over the saddle, in feet, on a real adult
+function depthWord(d){
+  if(d<=0)return 'bare sand';
+  if(d<=0.50)return 'ankle-deep';   //  6 in
+  if(d<=1.08)return 'shin-deep';    // 13 in
+  if(d<=1.67)return 'knee-deep';    // 20 in
+  if(d<=2.50)return 'thigh-deep';   // 30 in
+  return 'too deep';
+}
+function sunsSVG(n,size){
+  size=size||15;let s='<span class="suns" role="img" aria-label="'+n+' of 3 suns">';
+  for(let i=0;i<3;i++){
+    const on=i<n;
+    s+='<svg width="'+size+'" height="'+size+'" viewBox="0 0 20 20" aria-hidden="true">'+
+      '<circle cx="10" cy="10" r="4.6" fill="'+(on?'#ff8c42':'none')+'" stroke="'+(on?'#ff8c42':'currentColor')+'" stroke-width="1.4" opacity="'+(on?1:.4)+'"/>'+
+      (on?'<g stroke="#ff8c42" stroke-width="1.6" stroke-linecap="round"><line x1="10" y1="1.2" x2="10" y2="3.6"/><line x1="10" y1="16.4" x2="10" y2="18.8"/><line x1="1.2" y1="10" x2="3.6" y2="10"/><line x1="16.4" y1="10" x2="18.8" y2="10"/><line x1="3.8" y1="3.8" x2="5.5" y2="5.5"/><line x1="14.5" y1="14.5" x2="16.2" y2="16.2"/><line x1="14.5" y1="5.5" x2="16.2" y2="3.8"/><line x1="3.8" y1="16.2" x2="5.5" y2="14.5"/></g>':'')+
+      '</svg>';
+  }
+  return s+'</span>';
+}
+const TIER_NAME={3:'Bucket-list',2:'Golden',1:'Worth a wade',0:'Below the cut'};
+
+// ---- moods ----
+const MOODS={
+  calm:    {sunX:'26%',sky:['#afcbdc','#dde4dc','#f2e8d5'],seaA:'#8fb5c4',seaB:'#5e93a8',sun:'#ffedbb',sunSize:54,sunBottom:'58%',glow:'rgba(255,236,180,.35)',glowSize:180,glint:'rgba(255,240,200,.35)',ink:'#3a2c4f',inkSoft:'#54446e',panel:'rgba(255,255,255,.4)',panelBrd:'rgba(58,44,79,.18)',gull:'#3a2c4f'},
+  stirring:{sunX:'32%',sky:['#9fc0d8','#e3d6bb','#ffd9a0'],seaA:'#83acbd',seaB:'#527f97',sun:'#ffdf95',sunSize:62,sunBottom:'48%',glow:'rgba(255,215,150,.4)',glowSize:230,glint:'rgba(255,225,170,.45)',ink:'#3a2c4f',inkSoft:'#54446e',panel:'rgba(255,251,240,.42)',panelBrd:'rgba(58,44,79,.18)',gull:'#3a2c4f'},
+  warming: {sunX:'40%',sky:['#87a8cc','#eec392','#ffb56b'],seaA:'#7a9db4',seaB:'#4a7690',sun:'#ffc46b',sunSize:72,sunBottom:'40%',glow:'rgba(255,190,120,.45)',glowSize:290,glint:'rgba(255,205,140,.5)',ink:'#33254a',inkSoft:'#4d3d63',panel:'rgba(255,247,234,.45)',panelBrd:'rgba(58,44,79,.2)',gull:'#3a2c4f'},
+  golden:  {sunX:'47%',sky:['#6e86b8','#d98f74','#ff9e5e','#ffd9a0'],seaA:'#6d8aa6',seaB:'#3e6a86',sun:'#ffae52',sunSize:84,sunBottom:'31%',glow:'rgba(255,160,90,.5)',glowSize:360,glint:'rgba(255,185,110,.55)',ink:'#fff7ea',inkSoft:'#ffe3c2',panel:'rgba(46,33,66,.32)',panelBrd:'rgba(255,247,234,.3)',gull:'#2c2044'},
+  blazing: {sunX:'50%',sky:['#41335f','#8a4d7a','#e86a5a','#ff8c42','#ffc46b'],seaA:'#5b6390',seaB:'#343a66',sun:'#ff7a3d',sunSize:96,sunBottom:'25%',glow:'rgba(255,120,60,.55)',glowSize:440,glint:'rgba(255,150,80,.6)',ink:'#fff7ea',inkSoft:'#ffd9b8',panel:'rgba(36,26,56,.4)',panelBrd:'rgba(255,247,234,.28)',gull:'#241a38'},
+  happening:{sunX:'50%',sky:['#2e2450','#7a3d6e','#e85a4d','#ff7a2e','#ffd27a'],seaA:'#4d4f86',seaB:'#2a2e58',sun:'#ff7226',sunSize:110,sunBottom:'21%',glow:'rgba(255,110,40,.62)',glowSize:520,glint:'rgba(255,140,60,.65)',ink:'#fff7ea',inkSoft:'#ffd9b8',panel:'rgba(30,20,50,.45)',panelBrd:'rgba(255,247,234,.3)',gull:'#1c1330'}
+};
+function moodFor(days,happening){
+  if(happening)return 'happening';
+  if(days<=1.5)return 'blazing';
+  if(days<=7)return 'golden';
+  if(days<=30)return 'warming';
+  if(days<=90)return 'stirring';
+  return 'calm';
+}
+function applyMood(name){
+  const m=MOODS[name],hero=document.getElementById('hero');
+  const stops=m.sky.map((c,i)=>c+' '+Math.round(30+70*i/(m.sky.length-1))+'%').join(',');
+  hero.style.background='linear-gradient(to bottom,'+stops+')';
+  hero.style.setProperty('--sunX',m.sunX);
+  hero.style.setProperty('--seaA',m.seaA);hero.style.setProperty('--seaB',m.seaB);
+  hero.style.setProperty('--glintA',m.glint);
+  hero.style.setProperty('--ink',m.ink);hero.style.setProperty('--inkSoft',m.inkSoft);
+  hero.style.setProperty('--panel',m.panel);hero.style.setProperty('--panelBrd',m.panelBrd);
+  const sun=document.getElementById('sun');
+  sun.style.width=sun.style.height=m.sunSize+'px';
+  sun.style.bottom=m.sunBottom;sun.style.background=m.sun;
+  sun.style.boxShadow='0 0 '+(m.sunSize*.8)+'px '+(m.sunSize*.25)+'px '+m.glow;
+  const glow=document.getElementById('glow');
+  glow.style.width=glow.style.height=m.glowSize+'px';
+  glow.style.bottom='calc('+m.sunBottom+' + '+(m.sunSize/2)+'px)';
+  glow.style.background='radial-gradient(circle,'+m.glow+' 0%,rgba(255,255,255,0) 70%)';
+  document.querySelectorAll('.gull path').forEach(p=>p.setAttribute('stroke',m.gull));
+}
+
+// ---- state ----
+const ALL=findAll();
+const NOW=()=>Date.now();
+let warmOnly=false, shown=14, featured=null;
+// the date box mirrors whatever is charted; ignore change events that are just that echo
+// (a browser restoring the field on reload would otherwise yank the chart off the hero's evening)
+let pickEcho=null;
+const visible=()=>ALL.filter(a=>(a.closeWade!=null?a.closeWade:a.low.utc)+30*60000>NOW()&&(!warmOnly||(a.low.wall.m>=5&&a.low.wall.m<=9)));
+function nextEvent(){
+  const v=visible();
+  // an evening already under way wins, however it's rated — you can go right now
+  return v.find(a=>isHappeningNow(a))||v.find(a=>a.tier>=2)||v[0]||null;
+}
+function isHappeningNow(a){
+  if(!a)return false;const n=NOW();
+  return n>a.goTime-45*60000&&n<(a.closeWade!=null?a.closeWade:a.low.utc+3*3600000);
+}
+
+// ---- hero ----
+function renderHero(){
+  const a=nextEvent(), el=document.getElementById('heromain');
+  if(!a){el.innerHTML='<p class="beat">The charts run out on December 31, 2040.</p>';return;}
+  const happening=isHappeningNow(a);
+  applyMood(moodFor((a.goTime-NOW())/86400000,happening));
+  let h='';
+  h+='<p class="next-label">'+(happening?'Happening now':'Next sandbar sunset')+'</p>';
+  h+='<p class="next-date">'+fmtDateLong(a.low.utc)+' <span class="yr">'+fmtYear(a.low.utc)+'</span></p>';
+  if(happening){
+    h+='<p class="happening">It’s happening — go!</p>';
+  }else{
+    h+='<div class="count" id="count" aria-label="countdown"></div>';
+    h+='<p class="count-note">until you can get across</p>';
+  }
+  h+='<div class="beats">';
+  if(a.openWade!=null){
+    h+='<div class="beat"><p class="k">Wade over</p><p class="v">'+fmtTime(a.openWade)+'</p>'+
+       '<p class="n">The crossing is down to thigh-deep, and the high spine of the bar is already showing.</p></div>';
+  }
+  if(a.showWalk){
+    h+='<div class="beat"><p class="k">Walk over</p><p class="v">'+fmtTime(a.openWalk)+'</p>'+
+       '<p class="n">Ankle-deep at most by now — you can splash across without thinking about it.</p></div>';
+  }
+  h+='<div class="beat"><p class="k">Sun down</p><p class="v">'+fmtTime(a.sunsetUTC)+'</p>'+
+     '<p class="n">Roughly '+Math.round(a.acres)+' acres of sand underfoot; the crossing behind you is '+
+     depthWord(a.tSS-SADDLE)+'.</p></div>';
+  h+='</div>';
+  h+='<span class="badge">'+sunsSVG(a.tier,13)+' '+TIER_NAME[a.tier]+' · '+a.pattern+'</span>';
+  el.innerHTML=h;
+  renderCountdown(a);
+}
+function renderCountdown(a){
+  const el=document.getElementById('count');
+  if(!el||!a)return;
+  let s=Math.max(0,Math.floor((a.goTime-NOW())/1000));
+  const d=Math.floor(s/86400);s-=d*86400;
+  const hh=Math.floor(s/3600);s-=hh*3600;
+  const mm=Math.floor(s/60);s-=mm*60;
+  const b=(v,l)=>'<div class="cbox"><b>'+String(v).padStart(2,'0')+'</b><span>'+l+'</span></div>';
+  el.innerHTML=b(d,'days')+b(hh,'hours')+b(mm,'min')+b(s,'sec');
+}
+
+// ---- chart ----
+function renderChart(a){
+  if(!a)return;
+  featured=a;
+  document.getElementById('ev-title').textContent=fmtDateShort(a.low.utc)+', '+fmtYear(a.low.utc)+' — the crossing and the sun';
+  pickEcho=isoDate(a.low.utc);
+  document.getElementById('datepick').value=pickEcho;
+  const rt=document.getElementById('ev-rating');
+  rt.className='rating'+(a.tier===0?' miss':'');
+  rt.innerHTML=sunsSVG(a.tier,13)+'<span>'+TIER_NAME[a.tier]+' · '+a.pattern+
+    (a.tier===0?' — doesn’t make the list':'')+'</span>';
+
+  const t0=a.sunsetUTC-5*3600000, t1=a.sunsetUTC+3.4*3600000;
+  const W=800,H=280,padL=46,padR=54,padT=20,padB=34;
+  const pw=W-padL-padR, ph=H-padT-padB;
+  const N=180, pts=[];
+  let hMin=99,hMax=-99;
+  for(let k=0;k<=N;k++){
+    const t=t0+(t1-t0)*k/N, hh=tideAt(t);
+    pts.push([t,hh]); if(hh<hMin)hMin=hh; if(hh>hMax)hMax=hh;
+  }
+  // A fixed 6 ft window: enough headroom over the wade line to read the shape of the falling
+  // tide, without spending the frame on depths nobody crosses. The curve leaves the top.
+  const SPAN=6.0;
+  hMin=Math.min(hMin-0.4,-1.0);
+  hMax=Math.max(hMin+SPAN,WADE+1.0);
+  const X=t=>padL+pw*(t-t0)/(t1-t0);
+  const Y=v=>padT+ph*(1-(v-hMin)/(hMax-hMin));
+  const gwA=a.sunsetUTC-GOLD_PRE*60000, gwB=a.sunsetUTC+18*60000;
+  let path='M'+X(pts[0][0]).toFixed(1)+' '+Y(pts[0][1]).toFixed(1);
+  pts.slice(1).forEach(p=>{path+=' L'+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)});
+  let ticks='';
+  const w0=utcToWall(t0);
+  for(let t=localToUTC(w0.y,w0.m,w0.d,w0.hh+1,0);t<t1;t+=3600000){
+    ticks+='<line x1="'+X(t).toFixed(1)+'" y1="'+(H-padB)+'" x2="'+X(t).toFixed(1)+'" y2="'+(H-padB+4)+'" stroke="#8a6d49"/>';
+    const lbl=new Intl.DateTimeFormat('en-US',{timeZone:TZ,hour:'numeric'}).format(t).toLowerCase().replace(' ','');
+    ticks+='<text x="'+X(t).toFixed(1)+'" y="'+(H-padB+16)+'" text-anchor="middle" font-size="10.5" fill="#7a5f3f">'+lbl+'</text>';
+  }
+  const yWalk=Y(WALK), yWade=Y(WADE), yB=H-padB;
+  const mk=(t,lbl,col,ty,anchor)=>{
+    if(t==null)return '';
+    const x=X(t), tx=anchor==='end'?x-5:x+5;
+    return '<line x1="'+x.toFixed(1)+'" y1="'+yWade.toFixed(1)+'" x2="'+x.toFixed(1)+'" y2="'+yB+'" stroke="'+col+'" stroke-width="1.1" stroke-dasharray="2 3" opacity=".85"/>'+
+      '<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" text-anchor="'+(anchor||'start')+'" font-size="10" fill="'+col+'">'+lbl+' '+fmtTime(t)+'</text>';
+  };
+  const svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="display:block;min-width:600px" font-family="var(--mono)" role="img" '+
+    'aria-label="'+fmtDateShort(a.low.utc)+': wadeable from '+(a.openWade!=null?fmtTime(a.openWade):'never')+
+    ', walkable from '+(a.openWalk!=null?fmtTime(a.openWalk):'never')+', sunset '+fmtTime(a.sunsetUTC)+
+    ', low '+ft(a.low.h)+' at '+fmtTime(a.low.utc)+'" id="evsvg">'+
+    '<defs><clipPath id="plotclip"><rect x="'+padL+'" y="'+padT+'" width="'+pw+'" height="'+ph+'"/></clipPath></defs>'+
+    '<rect x="'+padL+'" y="'+yWalk.toFixed(1)+'" width="'+pw+'" height="'+(yB-yWalk).toFixed(1)+'" fill="#ecd9b0"/>'+
+    '<rect x="'+padL+'" y="'+yWade.toFixed(1)+'" width="'+pw+'" height="'+(yWalk-yWade).toFixed(1)+'" fill="#a9cfdf"/>'+
+    '<rect x="'+X(gwA).toFixed(1)+'" y="'+padT+'" width="'+(X(gwB)-X(gwA)).toFixed(1)+'" height="'+ph+'" fill="rgba(255,140,66,.26)"/>'+
+    '<text x="'+((X(gwA)+X(gwB))/2).toFixed(1)+'" y="'+(padT+11)+'" text-anchor="middle" font-size="9.5" fill="#a8501f">golden hour</text>'+
+    '<line x1="'+padL+'" y1="'+yWalk.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yWalk.toFixed(1)+'" stroke="#7a5f3f" stroke-width="1.4"/>'+
+    '<text x="'+(W-padR+5)+'" y="'+(yWalk+9).toFixed(1)+'" font-size="9" fill="#5b4429">walk</text>'+
+    '<line x1="'+padL+'" y1="'+yWade.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yWade.toFixed(1)+'" stroke="#2f6b87" stroke-width="1.4" stroke-dasharray="4 3"/>'+
+    '<text x="'+(W-padR+5)+'" y="'+(yWade-2).toFixed(1)+'" font-size="9" fill="#24536a">wade</text>'+
+    '<path d="'+path+'" fill="none" stroke="#1f4f68" stroke-width="2.6" stroke-linecap="round" clip-path="url(#plotclip)"/>'+
+    mk(a.openWade,'wade over',"#0d5c7a",yB-22,'start')+
+    (a.showWalk?mk(a.openWalk,'walk over',"#7a5209",yB-8,'start'):'')+
+    '<line x1="'+X(a.sunsetUTC).toFixed(1)+'" y1="'+padT+'" x2="'+X(a.sunsetUTC).toFixed(1)+'" y2="'+yB+'" stroke="#c8451a" stroke-width="1.8"/>'+
+    '<circle cx="'+X(a.sunsetUTC).toFixed(1)+'" cy="'+(padT+26)+'" r="6" fill="#ff8c42" stroke="#fff7ea" stroke-width="1.5"/>'+
+    '<text x="'+(X(a.sunsetUTC)-11).toFixed(1)+'" y="'+(padT+30)+'" text-anchor="end" font-size="11" fill="#8f2f0d">sun down '+fmtTime(a.sunsetUTC)+'</text>'+
+    '<circle cx="'+X(a.low.utc).toFixed(1)+'" cy="'+Y(a.low.h).toFixed(1)+'" r="4.5" fill="#1f4f68" stroke="#fff7ea" stroke-width="2"/>'+
+    '<text x="'+X(a.low.utc).toFixed(1)+'" y="'+(Y(a.low.h)-11).toFixed(1)+'" text-anchor="middle" font-size="10.5" fill="#1f4f68">low '+ft(a.low.h)+'</text>'+
+    '<text x="'+padL+'" y="'+(padT-7)+'" font-size="10" fill="#6b5335">ft above MLLW</text>'+
+    '<line id="xhair" x1="0" y1="'+padT+'" x2="0" y2="'+yB+'" stroke="#3a2c4f" opacity="0"/>'+
+    ticks+'</svg>';
+  document.getElementById('chart').innerHTML=svg;
+  document.getElementById('chart-note').innerHTML=
+    'The tide curve at the Annisquam River mouth. In the sandy band the crossing is ankle-deep at most and you '+
+    'can simply <strong>walk</strong> it; in the blue band it’s a shin- to thigh-deep <strong>wade</strong>; '+
+    'above that the bar is cut off. Three suns means the curve is inside the blue band when the golden band '+
+    'opens, and inside the sandy band for the half hour after sunset.';
+  const node=document.getElementById('evsvg'), ro=document.getElementById('readout');
+  node.addEventListener('pointermove',ev=>{
+    const r=node.getBoundingClientRect(), fx=(ev.clientX-r.left)/r.width*W;
+    const xh=document.getElementById('xhair');
+    if(fx<padL||fx>W-padR){ro.innerHTML='&nbsp;';xh.setAttribute('opacity',0);return;}
+    const t=t0+(t1-t0)*(fx-padL)/pw, hv=tideAt(t);
+    xh.setAttribute('x1',fx.toFixed(1));xh.setAttribute('x2',fx.toFixed(1));xh.setAttribute('opacity',.45);
+    ro.textContent=fmtTime(t)+'  —  tide '+ft(Math.round(hv*10)/10)+'  ·  crossing '+depthWord(hv-SADDLE)+
+      '  ·  '+Math.round(acresBare(hv))+' acres of bar bare';
+  });
+  node.addEventListener('pointerleave',()=>{ro.innerHTML='&nbsp;';document.getElementById('xhair').setAttribute('opacity',0)});
+}
+
+// ---- list ----
+function renderList(){
+  const v=visible(), rows=document.getElementById('rows');
+  let html='',lastMY='';
+  v.slice(0,shown).forEach(a=>{
+    const my=fmtMonthYear(a.low.utc);
+    if(my!==lastMY){html+='<p class="month-h">'+my+'</p>';lastMY=my;}
+    const cold=a.low.wall.m>=11||a.low.wall.m<=3;
+    const feat=featured&&featured.low.utc===a.low.utc;
+    html+='<button class="row'+(feat?' featured':'')+'" data-t="'+a.low.utc+'" aria-label="Show '+fmtDateShort(a.low.utc)+' on the chart">'+
+      '<span class="d">'+fmtDateShort(a.low.utc)+'<small>'+TIER_NAME[a.tier]+(cold?' · parka territory':'')+'</small></span>'+
+      '<span class="tv lo">'+fmtTime(a.openWade)+'<small>wade over</small></span>'+
+      '<span class="tv su">'+fmtTime(a.sunsetUTC)+'<small>sun down</small></span>'+
+      '<span class="gap">'+a.pattern+' · '+Math.round(a.acres)+' acres bare · crossing '+depthWord(a.tSS-SADDLE)+' at sundown</span>'+
+      sunsSVG(a.tier)+'</button>';
+  });
+  rows.innerHTML=html;
+  document.getElementById('morebtn').style.display=v.length>shown?'block':'none';
+  rows.querySelectorAll('.row').forEach(b=>b.addEventListener('click',()=>{
+    const a=v.find(x=>String(x.low.utc)===b.dataset.t);
+    if(a){
+      renderChart(a);renderList();
+      const el=document.getElementById('evening'), r=el.getBoundingClientRect();
+      if(r.top<-40||r.top>window.innerHeight*0.55)el.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }));
+}
+document.getElementById('warmtoggle').addEventListener('click',e=>{
+  warmOnly=!warmOnly;e.currentTarget.setAttribute('aria-pressed',warmOnly);shown=14;renderList();
+});
+document.getElementById('morebtn').addEventListener('click',()=>{shown+=18;renderList()});
+document.getElementById('datepick').addEventListener('change',e=>{
+  const v=e.target.value;if(!v||v===pickEcho)return;
+  const [y,m,d]=v.split('-').map(Number);
+  const i=lowNearestSunset(y,m,d);
+  if(i==null)return;
+  const r=describe(i);
+  if(r){renderChart(r);renderList();}
+});
+document.getElementById('nextbtn').addEventListener('click',()=>{
+  const a=nextEvent();if(a){renderChart(a);renderList();}
+});
+
+// ---- boot ----
+renderList();
+renderHero();
+renderChart(nextEvent());
+let lastGo=nextEvent()?nextEvent().goTime:0;
+setInterval(()=>{
+  const a=nextEvent();if(!a)return;
+  const hp=isHappeningNow(a), shownHp=document.querySelector('.happening')!=null;
+  if(a.goTime!==lastGo||hp!==shownHp){lastGo=a.goTime;renderHero();}
+  else renderCountdown(a);
+},1000);
+</script>

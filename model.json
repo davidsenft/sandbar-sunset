@@ -1,0 +1,22 @@
+{
+ "SADDLE": 1.35,
+ "WALK": 1.85,
+ "WADE": 3.35,
+ "GOLD_PRE": 70,
+ "depth_bands_ft": {
+  "ankle": 0.5,
+  "shin": 1.08,
+  "knee": 1.67,
+  "thigh": 2.5
+ },
+ "rule": {
+  "3": "golden hour opens between wade-over and walk-over AND [sunset, sunset+30] walkable throughout",
+  "2": "[sunset-30, sunset+30] walkable throughout",
+  "1": "[sunset-30, sunset+30] wadeable throughout"
+ },
+ "tier_names": {
+  "3": "Bucket-list",
+  "2": "Golden",
+  "1": "Worth a wade"
+ }
+}
