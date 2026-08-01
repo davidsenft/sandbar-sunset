@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# local editor / agent tooling
+.claude/
+
+# python
+__pycache__/
+*.pyc
+
+# raw NOAA year-files, if derive_tides.py ever caches them locally
+tides_*.json
