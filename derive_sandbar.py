@@ -62,11 +62,25 @@ ALWAYS_DRY_FT = 9.2      # ~MHW above MLLW; ground above this is permanent land
 BAR_MIN_FT, BAR_MAX_FT = -4.0, 8.0
 
 # --- field calibration, Wingaersheek, evening of 2026-08-02 -------------------
-# Observed on the bar: ankle-deep at the crossing at 19:30 (tide +1.43 ft MLLW),
-# low-shin at 19:20 (+1.65), and the bar still completely submerged at 18:20
-# (+3.38). The lidar-derived saddle sat 0.42 ft too high to fit any of that. One
-# uniform offset reconciles all three, which is what you would expect from datum
-# error (VDatum quotes +/-0.38 ft) plus five years of sandbar migration.
+# Two observations from that evening, and only two:
+#
+#   18:20, tide +3.38 ft MLLW — the bar itself was not yet showing above water
+#   19:20, tide +1.65 ft MLLW — the crossing was low-shin deep
+#
+# The saddle is pinned by the second one alone: it is set so that a +1.65 ft tide
+# reads as roughly shin height. That is a single-point calibration against one
+# eyeballed depth, so treat it as approximate — "low shin" anywhere in the 7-9 in
+# range would put the saddle between about +0.90 and +1.07 ft. The chosen value
+# sits near the deeper end of that.
+#
+# The 18:20 observation is a one-sided check rather than a second fix on the
+# offset: it rules out the bar being exposed at that level, which the old
+# latitude-based bar mask wrongly claimed. That was a masking error, not a datum
+# error, so it does not independently corroborate the 0.42 ft.
+#
+# The correction is nonetheless within VDatum's own +/-0.38 ft on the NAVD88->MLLW
+# conversion, before accounting for five years of sandbar migration since the
+# 2021 survey.
 DATUM_CORRECTION_FT = -0.42
 
 SQ_M_PER_ACRE = 4046.86
@@ -366,7 +380,17 @@ def main():
     json.dump({"saddle_ft_mllw": round(saddle_true, 2),
                "saddle_ft_mllw_raw_lidar": round(saddle, 2),
                "datum_correction_ft": DATUM_CORRECTION_FT,
-               "calibrated_against": "field observation, Wingaersheek, 2026-08-02",
+               "calibrated_against": {
+                   "where": "Wingaersheek Beach", "when": "2026-08-02",
+                   "observations": [
+                       {"time": "18:20", "tide_ft_mllw": 3.38,
+                        "observed": "bar not yet showing above water"},
+                       {"time": "19:20", "tide_ft_mllw": 1.65,
+                        "observed": "crossing low-shin deep"}],
+                   "note": ("saddle pinned by the 19:20 observation alone; the "
+                            "18:20 one is a one-sided check. Plausible range "
+                            "given 'low shin' = 7-9 in is +0.90 to +1.07 ft."),
+                   "saddle_plausible_range_ft": [0.90, 1.07]},
                "walk_ft_mllw": round(saddle_true + 0.5, 2),
                "wade_ft_mllw": 2.40,
                "navd88_to_mllw_m": NAVD88_TO_MLLW_M,

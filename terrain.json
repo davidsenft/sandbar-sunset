@@ -2,7 +2,27 @@
  "saddle_ft_mllw": 0.93,
  "saddle_ft_mllw_raw_lidar": 1.35,
  "datum_correction_ft": -0.42,
- "calibrated_against": "field observation, Wingaersheek, 2026-08-02",
+ "calibrated_against": {
+  "where": "Wingaersheek Beach",
+  "when": "2026-08-02",
+  "observations": [
+   {
+    "time": "18:20",
+    "tide_ft_mllw": 3.38,
+    "observed": "bar not yet showing above water"
+   },
+   {
+    "time": "19:20",
+    "tide_ft_mllw": 1.65,
+    "observed": "crossing low-shin deep"
+   }
+  ],
+  "note": "saddle pinned by the 19:20 observation alone; the 18:20 one is a one-sided check. Plausible range given 'low shin' = 7-9 in is +0.90 to +1.07 ft.",
+  "saddle_plausible_range_ft": [
+   0.9,
+   1.07
+  ]
+ },
  "walk_ft_mllw": 1.43,
  "wade_ft_mllw": 2.4,
  "navd88_to_mllw_m": 1.561,

@@ -59,12 +59,15 @@ as evidence and are never served.
 - **Sunset** — NOAA solar position algorithm computed for the beach itself (42.650° N, 70.684° W), checked against the US Naval Observatory.
 - **Terrain** — NOAA/NCEI CUDEM 1/9 arc-second, tile `ncei19_n42x75_w070x75_2021v1`, converted to MLLW using VDatum.
 
-The levels above are **field-calibrated**: on 2 August 2026 the crossing was ankle-deep
-at 19:30 and low-shin at 19:20, with the bar still submerged at 18:20. The 2021 lidar put
-the saddle 0.42 ft higher than it actually walks — within its own ±0.4 ft datum
-uncertainty, plus five years of sandbar migration — so a uniform correction is applied in
-`derive_sandbar.py`. Treat the depths as a good guide rather than a promise, and if a
-visit disagrees with the app, trust your feet and adjust `DATUM_CORRECTION_FT`. The predictions also ignore weather entirely — wind, storm surge and cloud on
+The levels above are **field-calibrated, from a single evening on the bar**. On 2 August
+2026 the bar was not yet showing at 18:20 (tide +3.38 ft) and the crossing was low-shin
+deep at 19:20 (+1.65). The saddle is pinned by that second observation alone, so it is
+approximate: reading "low shin" as anywhere from 7 to 9 inches puts it between +0.90 and
++1.07 ft, and the value used sits near the deeper end. It is 0.42 ft below what the 2021
+lidar implied — within VDatum's own ±0.4 ft, before counting five years of sandbar
+migration — and that correction is applied in `derive_sandbar.py`. Treat the depths as a
+good guide rather than a promise, and if a visit disagrees, trust your feet and adjust
+`DATUM_CORRECTION_FT`. The predictions also ignore weather entirely — wind, storm surge and cloud on
 the horizon do as they like.
 
 Tide data runs out on **31 December 2040**, at which point `derive_tides.py` needs a
