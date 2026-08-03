@@ -59,8 +59,15 @@ GRID_W, GRID_H = 720, 800
 CROP = dict(lon0=-70.6935, lon1=-70.6820, lat0=42.6510, lat1=42.6625)
 
 ALWAYS_DRY_FT = 9.2      # ~MHW above MLLW; ground above this is permanent land
-BAR_SOUTH_LAT = 42.6548  # everything seaward (north) of the beach berm
 BAR_MIN_FT, BAR_MAX_FT = -4.0, 8.0
+
+# --- field calibration, Wingaersheek, evening of 2026-08-02 -------------------
+# Observed on the bar: ankle-deep at the crossing at 19:30 (tide +1.43 ft MLLW),
+# low-shin at 19:20 (+1.65), and the bar still completely submerged at 18:20
+# (+3.38). The lidar-derived saddle sat 0.42 ft too high to fit any of that. One
+# uniform offset reconciles all three, which is what you would expect from datum
+# error (VDatum quotes +/-0.38 ft) plus five years of sandbar migration.
+DATUM_CORRECTION_FT = -0.42
 
 SQ_M_PER_ACRE = 4046.86
 
@@ -188,15 +195,27 @@ def saddle_elevation(elev, bott):
     return float(np.median(bott[crest])), int(crest.sum())
 
 
-def dry_area_table(elev, px_area):
-    """Bare area of the bar itself vs water level, ignoring how you'd get there."""
-    h, w = elev.shape
-    lat = np.array([[row_lat(i, h)] for i in range(h)]) * np.ones((1, w))
-    region = (elev > BAR_MIN_FT) & (elev < BAR_MAX_FT) & (lat > BAR_SOUTH_LAT)
+def dry_area_table(elev, bott, saddle, px_area):
+    """Bare area of the bar itself vs water level, ignoring how you'd get there.
+
+    "The bar" is defined as everything gated by the saddle — ground you can only
+    reach by crossing the neck. That is what the bottleneck map already encodes,
+    and it excludes the beach berm automatically: the berm joins permanent land
+    over high ground, so its bottleneck value is high.
+
+    Defining the region by latitude instead (an earlier attempt) swept in the
+    upper beach and had the model claiming ~3.6 acres of bar bare at a tide when
+    the bar was observed to be entirely underwater.
+
+    Levels are reported as *true* water level, i.e. with DATUM_CORRECTION_FT
+    already applied, so the table can be read straight against a tide prediction.
+    """
+    region = (bott <= saddle + 0.05) & (elev > BAR_MIN_FT) & (elev < BAR_MAX_FT)
     out = []
-    for tenth in range(-20, 41, 2):
-        lv = tenth / 10.0
-        acres = (region & (elev > lv)).sum() * px_area / SQ_M_PER_ACRE
+    for tenth in range(-24, 37, 2):
+        lv = tenth / 10.0                       # true water level
+        dem_lv = lv - DATUM_CORRECTION_FT       # the level in raw DEM terms
+        acres = (region & (elev > dem_lv)).sum() * px_area / SQ_M_PER_ACRE
         out.append([lv, round(float(acres), 1)])
     return out, int(region.sum())
 
@@ -323,12 +342,14 @@ def main():
     bott = bottleneck_map(elev)
     np.save(p("bottleneck.npy"), bott)
     saddle, n_crest = saddle_elevation(elev, bott)
+    saddle_true = saddle + DATUM_CORRECTION_FT
     print(f"  crest pixels {n_crest}")
-    print(f"  SADDLE onto the bar: {saddle:+.2f} ft MLLW"
-          f"   (+/-~0.4 ft from datum uncertainty)")
+    print(f"  saddle, raw lidar:   {saddle:+.2f} ft MLLW")
+    print(f"  SADDLE, calibrated:  {saddle_true:+.2f} ft MLLW"
+          f"   (field correction {DATUM_CORRECTION_FT:+.2f} ft)")
 
     print("Bare-area table ...")
-    table, n_region = dry_area_table(elev, px_area)
+    table, n_region = dry_area_table(elev, bott, saddle, px_area)
     json.dump(table, open(p("bar_dry_table.json"), "w"))
     print(f"  bar region {n_region} px = {n_region * px_area / SQ_M_PER_ACRE:.1f} acres")
 
@@ -342,7 +363,12 @@ def main():
     print("Rendering maps ...")
     render(mllw, sub, bott, args.outdir)
 
-    json.dump({"saddle_ft_mllw": round(saddle, 2),
+    json.dump({"saddle_ft_mllw": round(saddle_true, 2),
+               "saddle_ft_mllw_raw_lidar": round(saddle, 2),
+               "datum_correction_ft": DATUM_CORRECTION_FT,
+               "calibrated_against": "field observation, Wingaersheek, 2026-08-02",
+               "walk_ft_mllw": round(saddle_true + 0.5, 2),
+               "wade_ft_mllw": 2.40,
                "navd88_to_mllw_m": NAVD88_TO_MLLW_M,
                "datum_uncertainty_ft": 0.38,
                "source": "NCEI CUDEM 1/9 arc-second, ncei19_n42x75_w070x75_2021v1",

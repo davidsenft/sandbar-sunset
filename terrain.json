@@ -1,5 +1,10 @@
 {
- "saddle_ft_mllw": 1.35,
+ "saddle_ft_mllw": 0.93,
+ "saddle_ft_mllw_raw_lidar": 1.35,
+ "datum_correction_ft": -0.42,
+ "calibrated_against": "field observation, Wingaersheek, 2026-08-02",
+ "walk_ft_mllw": 1.43,
+ "wade_ft_mllw": 2.4,
  "navd88_to_mllw_m": 1.561,
  "datum_uncertainty_ft": 0.38,
  "source": "NCEI CUDEM 1/9 arc-second, ncei19_n42x75_w070x75_2021v1",

@@ -215,11 +215,13 @@
 
     <h4>1 · The crossing</h4>
     <p>The Wingaersheek bar is a spit joined to the beach by a low saddle. Mapping NOAA's 1/9-arc-second
-      coastal elevation model of the flats puts that saddle at roughly <strong>1.4 ft above MLLW</strong>, while
-      the bar's own spine runs a foot or two higher — so there's a real window where the bar is bare sand and
-      the neck you cross is still shin-deep. Two levels matter: below about <strong>1.9 ft</strong> the crossing
-      is ankle-deep at most and you can simply walk it; below about <strong>3.4 ft</strong> it's a wade, up to
-      roughly thigh-deep. Deeper than that and the bar is effectively an island. Those are the two bands on the chart.</p>
+      coastal elevation model of the flats, then correcting it against an evening spent out there in
+      August 2026, puts that saddle at roughly <strong>0.9 ft above MLLW</strong> — while the bar's own
+      spine runs higher, so there's a real window where the bar is bare sand and the neck you cross is
+      still shin-deep. Two levels matter: below about <strong>1.4 ft</strong> the crossing is ankle-deep
+      at most and you can simply walk it; below about <strong>2.4 ft</strong> it's a knee-deep wade, and
+      the bar has broken the surface. Deeper than that and there's nothing out there to wade to yet.
+      Those are the two bands on the chart.</p>
 
     <h4>2 · The rule</h4>
     <p>A rating is a statement about where the tide curve sits relative to the two crossing levels and the
@@ -239,8 +241,8 @@
     <p>Tides are astronomy. Predictions come from NOAA's harmonic forecasts for station
       <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8441571">8441571 — Annisquam,
       Lobster Cove</a>, a mile up the river from the flats, and run through <strong>December 2040</strong>.
-      Three suns means the evening has the full shape described above — about <strong>twenty-three a year</strong>,
-      ten of them in swimmable weather. Use the date box above to pull up <em>any</em> evening, including the
+      Three suns means the evening has the full shape described above — about <strong>fifteen a year</strong>,
+      six of them in swimmable weather. Use the date box above to pull up <em>any</em> evening, including the
       ones that don't make the list, and see for yourself.</p>
 
     <p><strong>A note from the sea:</strong> the flats flood from the edges first when the tide turns, and
@@ -258,9 +260,12 @@
 const TIDE = __TIDEDATA__;
 const DRYTBL = __DRYTBL__;
 const LAT=42.6501, LON=-70.6842, TZ='America/New_York';
-const SADDLE=1.35;   // ft MLLW — the saddle onto the bar; at or below this it is bare sand
-const WALK=1.85;     // ft MLLW — 6 in over the saddle: ankle-deep at most, so you just walk it
-const WADE=3.35;     // ft MLLW — 24 in over the saddle: a thigh-deep wade, the deepest worth attempting
+// Field-calibrated against an evening on the bar, 2026-08-02. The 2021 lidar put the
+// saddle 0.42 ft higher than it walks; observed ankle depth at 19:30 (tide +1.43) and
+// low shin at 19:20 (tide +1.65) both pin it here.
+const SADDLE=0.93;   // ft MLLW — the saddle onto the bar; at or below this it is bare sand
+const WALK=1.43;     // ft MLLW — 6 in over the saddle: ankle-deep at most, so you just walk it
+const WADE=2.40;     // ft MLLW — knee-deep, and by now the bar itself has broken the surface
 const GOLD_PRE=70;   // the golden band opens this many minutes before sunset
 const B36='0123456789abcdefghijklmnopqrstuvwxyz';
 
@@ -525,7 +530,7 @@ function renderHero(){
   h+='<div class="beats">';
   if(a.openWade!=null){
     h+='<div class="beat"><p class="k">Wade over</p><p class="v">'+fmtTime(a.openWade)+'</p>'+
-       '<p class="n">The crossing is down to thigh-deep, and the high spine of the bar is already showing.</p></div>';
+       '<p class="n">The crossing is down to '+depthWord(WADE-SADDLE)+', and the high spine of the bar has just broken the surface.</p></div>';
   }
   if(a.showWalk){
     h+='<div class="beat"><p class="k">Walk over</p><p class="v">'+fmtTime(a.openWalk)+'</p>'+
@@ -622,7 +627,7 @@ function renderChart(a){
   document.getElementById('chart').innerHTML=svg;
   document.getElementById('chart-note').innerHTML=
     'The tide curve at the Annisquam River mouth. In the sandy band the crossing is ankle-deep at most and you '+
-    'can simply <strong>walk</strong> it; in the blue band it’s a shin- to thigh-deep <strong>wade</strong>; '+
+    'can simply <strong>walk</strong> it; in the blue band it’s a shin- to knee-deep <strong>wade</strong>; '+
     'above that the bar is cut off. Three suns means the curve is inside the blue band when the golden band '+
     'opens, and inside the sandy band for the half hour after sunset.';
   const node=document.getElementById('evsvg'), ro=document.getElementById('readout');
