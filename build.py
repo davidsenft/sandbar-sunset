@@ -39,8 +39,24 @@ def main():
         page = page.replace(token, blob)
         print(f"  {token:<14} <- {filename} ({len(blob):,} chars)")
 
+    banner = ("<!-- GENERATED FILE — DO NOT EDIT.\n"
+              "     Built by build.py from template.html.\n"
+              "     Any edit here is silently destroyed on the next build.\n"
+              "     Change template.html instead, then re-run build.py. -->\n")
+    page = banner + page
+
     dest = os.path.join(HERE, "public", "index.html")
     os.makedirs(os.path.dirname(dest), exist_ok=True)
+
+    # If someone hand-edited the built page, say so loudly rather than eating it.
+    if os.path.exists(dest):
+        previous = open(dest, encoding="utf-8").read()
+        if previous and previous != page and not previous.startswith("<!-- GENERATED FILE"):
+            print("\n  NOTE: public/index.html had no generated-file banner, so it may\n"
+                  "        contain hand edits. They are being overwritten. If you meant\n"
+                  "        to keep them, recover with:  git diff HEAD -- public/index.html\n",
+                  file=sys.stderr)
+
     open(dest, "w", encoding="utf-8").write(page)
     print(f"\nWrote {dest} ({len(page.encode('utf-8')):,} bytes)")
 

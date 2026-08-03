@@ -175,7 +175,7 @@
 
 <div class="shore">
   <section id="evening">
-    <p class="eyebrow">That evening, hour by hour</p>
+    <p class="eyebrow">Hour by hour</p>
     <h2 id="ev-title">The crossing and the sun</h2>
     <div class="pickrow">
       <label for="datepick">Look up any evening</label>
@@ -261,8 +261,8 @@ const TIDE = __TIDEDATA__;
 const DRYTBL = __DRYTBL__;
 const LAT=42.6501, LON=-70.6842, TZ='America/New_York';
 // Field-calibrated against an evening on the bar, 2026-08-02. The 2021 lidar put the
-// saddle 0.42 ft higher than it walks; observed ankle depth at 19:30 (tide +1.43) and
-// low shin at 19:20 (tide +1.65) both pin it here.
+// saddle 0.42 ft higher than it walks. Pinned by one observation — the crossing was
+// low-shin deep at 19:20, tide +1.65 — so it is approximate; see terrain.json.
 const SADDLE=0.93;   // ft MLLW — the saddle onto the bar; at or below this it is bare sand
 const WALK=1.43;     // ft MLLW — 6 in over the saddle: ankle-deep at most, so you just walk it
 const WADE=2.40;     // ft MLLW — knee-deep, and by now the bar itself has broken the surface

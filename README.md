@@ -53,6 +53,10 @@ cross-checks its datum conversion against the tide station's published values.
 Only `public/` is deployed. The rasters, derived tables and rendered maps stay in the repo
 as evidence and are never served.
 
+**`public/index.html` is generated — never edit it by hand.** It is rebuilt from
+`template.html` on every `build.py` run, so edits made there are destroyed without
+warning. All copy, styling and logic lives in `template.html`.
+
 ## Sources and caveats
 
 - **Tides** — NOAA harmonic predictions, station [8441571, Annisquam (Lobster Cove)](https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8441571), a mile up the river from the flats.
